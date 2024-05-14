@@ -4,12 +4,21 @@ import { Product, Products } from '../../types';
 import { ProductComponent } from '../components/product/product.component';
 import { ProductsService } from '../services/products.service';
 import { PaginatorModule } from 'primeng/paginator';
-import { consumerPollProducersForChange } from '@angular/core/primitives/signals';
+import { EditPopupComponent } from '../components/edit-popup/edit-popup.component';
+import { ButtonModule } from 'primeng/button';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, ProductComponent, PaginatorModule],
+  imports: [
+    CommonModule,
+    ProductComponent,
+    PaginatorModule,
+    EditPopupComponent,
+    ButtonModule,
+    FormsModule
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
@@ -20,6 +29,38 @@ export class HomeComponent {
 
   totalRecords: number = 0;
   rows: number = 5;
+
+  displayEditPopup: boolean = false;
+  displayAddPopup: boolean = false;
+
+  toggleEditPopup(product: Product) {
+    this.selectedProduct = product;
+    this.displayEditPopup = true;
+  }
+
+  toggleDeletePopup(product: Product) {}
+
+  toggleAddPopup() {
+    this.displayAddPopup = true;
+  }
+
+  selectedProduct: Product = {
+    id: 0,
+    name: '',
+    image: '',
+    price: '',
+    rating: 0,
+  };
+
+  onConfirmEdit(product: Product) {
+    this.editProduct(product, this.selectedProduct.id ?? 0); //if is it exist
+    this.displayEditPopup = false;
+  }
+
+  onConfirmAdd(product: Product) {
+    this.addProduct(product);
+    this.displayEditPopup = false;
+  }
 
   onProductOutput(product: Product) {
     console.log(product, 'Output');
