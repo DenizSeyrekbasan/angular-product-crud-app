@@ -17,7 +17,7 @@ import { FormsModule } from '@angular/forms';
     PaginatorModule,
     EditPopupComponent,
     ButtonModule,
-    FormsModule
+    FormsModule,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -38,7 +38,13 @@ export class HomeComponent {
     this.displayEditPopup = true;
   }
 
-  toggleDeletePopup(product: Product) {}
+  toggleDeletePopup(product: Product) {
+    if (!product.id) {
+      return;
+    }
+
+    this.deleteProduct(product.id);
+  }
 
   toggleAddPopup() {
     this.displayAddPopup = true;
