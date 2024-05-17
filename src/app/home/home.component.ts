@@ -7,6 +7,8 @@ import { Paginator, PaginatorModule } from 'primeng/paginator';
 import { EditPopupComponent } from '../components/edit-popup/edit-popup.component';
 import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
+import { MessageService } from '../services/message.service';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-home',
@@ -18,12 +20,17 @@ import { FormsModule } from '@angular/forms';
     EditPopupComponent,
     ButtonModule,
     FormsModule,
+    ToastModule,
   ],
+  providers: [MessageService],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
-  constructor(private productsService: ProductsService) {}
+  constructor(
+    private productsService: ProductsService,
+    private messageService: MessageService
+  ) {}
 
   @ViewChild('paginator') paginator: Paginator | undefined;
 
@@ -61,7 +68,7 @@ export class HomeComponent {
   };
 
   onConfirmEdit(product: Product) {
-    this.editProduct(product, this.selectedProduct.id ?? 0); //if is it exist
+    this.editProduct(product, this.selectedProduct.id ?? 0); //means that if is it exist
     this.displayEditPopup = false;
   }
 
@@ -89,6 +96,7 @@ export class HomeComponent {
         next: (data: Products) => {
           this.products = data.items;
           this.totalRecords = data.total;
+          // this.messageService.showSuccess('success', 'page updated !');
         },
         error: (error) => {
           console.log(error);
@@ -104,6 +112,7 @@ export class HomeComponent {
           console.log(data);
           this.fetchProducts(0, this.rows);
           this.resetPaginator();
+          this.messageService.showSuccess('Success !', 'Product edited !');
         },
         error: (error) => {
           console.log(error);
@@ -119,6 +128,10 @@ export class HomeComponent {
           console.log(data);
           this.fetchProducts(0, this.rows);
           this.resetPaginator();
+          this.messageService.showSuccess(
+            'Success !',
+            'Successfully deleted !'
+          );
         },
         error: (error) => {
           console.log(error);
@@ -134,6 +147,7 @@ export class HomeComponent {
           console.log(data);
           this.fetchProducts(0, this.rows);
           this.resetPaginator();
+          this.messageService.showSuccess('Success !', 'Product Added !');
         },
         error: (error) => {
           console.log(error);

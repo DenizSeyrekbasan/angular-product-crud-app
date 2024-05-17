@@ -32,7 +32,7 @@ export interface Products {
   items: Product[];
   total: number;
   page: number;
-  perPage: number;
+  perPage: number; //how many to show on a page
   totalPages: number;
 }
 

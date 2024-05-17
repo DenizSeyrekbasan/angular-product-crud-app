@@ -6,6 +6,6 @@ export const routes: Routes = [
   {
     path: 'about-us',
     loadChildren: () =>
-      import('./modules/about-us/about-us.module').then((m) => m.AboutUsModule),
+      import('./modules/about-us/about-us.module').then((m) => m.AboutUsModule), //lazy-loading
   },
 ];
